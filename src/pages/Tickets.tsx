@@ -15,11 +15,11 @@ const Tickets= () => {
   }, [user, navigate]);
 
   return (
-    <div className="width-full">
+    <div style={{ flex: 1 , width: "1000px"}}>
       {/* Navbar */}
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1 , textAlign: "start"}}>
             Tickets
           </Typography>
           <Button color="inherit" onClick={logout}>Cerrar Sesión</Button>
@@ -28,9 +28,6 @@ const Tickets= () => {
 
       {/* Contenido */}
       <Container sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Bienvenido, {user?.email}
-        </Typography>
 
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={6}>

@@ -51,14 +51,14 @@ const NewTicket = () => {
   };
 
   return (
-    <Container sx={{ mt: 4, backgroundColor: "#f9f9f9", padding: 4, borderRadius: 2 }}>
+    <Container sx={{ mt: 4, backgroundColor: "#f9f9f9", padding: 4, borderRadius: 2 , width: "1000px"}}>
       <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', color: "#333" }}>
-        Crear Nuevo Ticket
+        Generar Ticket
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "500px" }}>
+        <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "1000px" }}>
           {/* Select de tipo de ticket */}
-          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+          <FormControl fullWidth sx={{ marginBottom: 2 , textAlign: "start"}}>
             <InputLabel id="ticket-type-label">Tipo de Problema</InputLabel>
             <Select
               labelId="ticket-type-label"
@@ -77,15 +77,15 @@ const NewTicket = () => {
 
           {/* Mostrar el SLA correspondiente */}
           {ticketType && sla && (
-            <Typography variant="body1" color="text.secondary" sx={{ marginBottom: 2 }}>
-              SLA: {sla} minutos
+            <Typography variant="body1" color="text.secondary" sx={{ marginBottom: 2 , textAlign: "start"}}>
+              Tiempo de respuesta (SLA): {sla} minutos
             </Typography>
           )}
 
           {/* Descripción del ticket */}
           <TextField
             fullWidth
-            label="Descripción"
+            label="Cuéntanos más sobre tu problema"
             multiline
             rows={4}
             value={description}

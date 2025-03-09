@@ -8,6 +8,7 @@ import NewTicket from "./pages/NewTicket";
 import MyTickets from "./pages/MyTickets";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import Tickets from "./pages/Tickets";
+import "./App.css";
 
 
 

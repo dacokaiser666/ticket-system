@@ -8,14 +8,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authLoading) return; // Si está cargando, no hacemos nada
+    if (authLoading) return;
 
     if (!user) {
-      navigate("/login"); // Si no hay usuario, redirige a login
+      navigate("/login");
     } else if (user.role === "cliente") {
-      navigate("/dashboard"); // Si es cliente, accede al dashboard de clientes
+      navigate("/dashboard");
     } else if (user.role === "empleado") {
-      navigate("/employee-dashboard"); // Si es empleado, accede al dashboard de empleados
+      navigate("/employee-dashboard");
     }
   }, [user, authLoading, navigate]);
 
@@ -24,25 +24,25 @@ const Dashboard = () => {
       {/* Navbar */}
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Sisticket - Dashboard
+          <Typography variant="h6" sx={{ flexGrow: 1 , textAlign: "start"}}>
+            Sisticket - Catálogo de Servicios
           </Typography>
           <Button color="inherit" onClick={logout}>Cerrar Sesión</Button>
         </Toolbar>
       </AppBar>
 
       {/* Contenido */}
-      <Container sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Bienvenido, {user?.email}
+      <Container sx={{ m: 2 , textAlign: "start", mb: 6 }}>
+        <Typography variant="h6" gutterBottom>
+          Bienvenid@, {user?.email}
         </Typography>
 
         {/* Catálogo de Servicios */}
         <Grid container spacing={3}>
-          {/* Servicio 3 - Tickets (Nuevo) */}
+          {/* Servicio 1 */}
           <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
+            <Card sx={{ display: "flex", flexDirection: "column", height: "100%" , justifyContent: "space-between"}}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">Tickets</Typography>
                 <Typography variant="body2" color="text.secondary">
                   Gestiona tus tickets de soporte y requerimientos.
@@ -52,28 +52,7 @@ const Dashboard = () => {
                   color="primary"
                   sx={{ mt: 2 }}
                   fullWidth
-                  onClick={() => navigate("/tickets")} // Navegar a la página de Tickets
-                >
-                  Ver
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Servicio 1 */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Soporte Técnico</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Ayuda con problemas técnicos de hardware y software.
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ mt: 2 }}
-                  fullWidth
-                  onClick={() => navigate("/support")} // Navegar a la página de soporte
+                  onClick={() => navigate("/tickets")}
                 >
                   Ver
                 </Button>
@@ -83,8 +62,29 @@ const Dashboard = () => {
 
           {/* Servicio 2 */}
           <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
+            <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="h6">Soporte Técnico</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Ayuda con problemas técnicos de hardware y software.
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  fullWidth
+                  onClick={() => navigate("/soporte")}
+                >
+                  Ver
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Servicio 3 */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">Redes y Conectividad</Typography>
                 <Typography variant="body2" color="text.secondary">
                   Solución de problemas de conexión de red y configuración de red.
@@ -94,7 +94,7 @@ const Dashboard = () => {
                   color="primary"
                   sx={{ mt: 2 }}
                   fullWidth
-                  onClick={() => navigate("/network")} // Navegar a la página de redes
+                  onClick={() => navigate("/redes")}
                 >
                   Ver
                 </Button>
@@ -102,12 +102,10 @@ const Dashboard = () => {
             </Card>
           </Grid>
 
-          
-
           {/* Servicio 4 */}
           <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
+            <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">Mantenimiento de Equipos</Typography>
                 <Typography variant="body2" color="text.secondary">
                   Solicita mantenimiento para tu hardware o equipos.
@@ -117,7 +115,7 @@ const Dashboard = () => {
                   color="primary"
                   sx={{ mt: 2 }}
                   fullWidth
-                  onClick={() => navigate("/maintenance")} // Navegar a la página de mantenimiento
+                  onClick={() => navigate("/mantenimiento")}
                 >
                   Ver
                 </Button>
@@ -127,8 +125,8 @@ const Dashboard = () => {
 
           {/* Servicio 5 */}
           <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
+            <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">Software y Licencias</Typography>
                 <Typography variant="body2" color="text.secondary">
                   Ayuda con instalación y licencias de software.
@@ -138,7 +136,7 @@ const Dashboard = () => {
                   color="primary"
                   sx={{ mt: 2 }}
                   fullWidth
-                  onClick={() => navigate("/software")} // Navegar a la página de software
+                  onClick={() => navigate("/software")}
                 >
                   Ver
                 </Button>
