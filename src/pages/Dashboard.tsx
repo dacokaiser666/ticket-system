@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { AppBar, Toolbar, Typography, Button, Container, Card, CardContent, Grid } from "@mui/material";
@@ -38,7 +37,13 @@ const Dashboard = () => {
                 <Typography variant="body2" color="text.secondary">
                   Reporta un nuevo problema o solicitud.
                 </Typography>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  fullWidth
+                  onClick={() => navigate("/new-ticket")}  // Navegar a la página de nuevo ticket
+                >
                   Nuevo Ticket
                 </Button>
               </CardContent>
@@ -52,7 +57,13 @@ const Dashboard = () => {
                 <Typography variant="body2" color="text.secondary">
                   Revisa el estado de tus solicitudes.
                 </Typography>
-                <Button variant="contained" color="secondary" sx={{ mt: 2 }} fullWidth>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ mt: 2 }}
+                  fullWidth
+                  onClick={() => navigate("/my-tickets")}  // Navegar a la página de mis tickets
+                >
                   Ver Tickets
                 </Button>
               </CardContent>
@@ -66,7 +77,13 @@ const Dashboard = () => {
                 <Typography variant="body2" color="text.secondary">
                   Ajusta tu perfil y preferencias.
                 </Typography>
-                <Button variant="contained" color="warning" sx={{ mt: 2 }} fullWidth>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  sx={{ mt: 2 }}
+                  fullWidth
+                  onClick={() => navigate("/settings")}  // Navegar a la página de configuración (si existe)
+                >
                   Configuración
                 </Button>
               </CardContent>

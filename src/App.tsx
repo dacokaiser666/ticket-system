@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import { AuthProvider } from "./context/AuthProvider";
 import NewTicket from "./pages/NewTicket";
 import MyTickets from "./pages/MyTickets";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
 
 
 
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/new-ticket" element={<ProtectedRoute><NewTicket /></ProtectedRoute>} />
           <Route path="/my-tickets" element={<ProtectedRoute><MyTickets /></ProtectedRoute>} />
+          <Route path="/employee-dashboard" element={<ProtectedRoute><EmployeeDashboard /></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>
