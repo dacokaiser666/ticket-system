@@ -1,8 +1,6 @@
 import { useState } from "react";
-
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-
-import { TextField, Button, Container, Typography } from "@mui/material";
+import { TextField, Button, Container, Typography, Box, MenuItem, Select, InputLabel, FormControl, SelectChangeEvent } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import { db } from "../firebase/firebase";
@@ -10,32 +8,113 @@ import { db } from "../firebase/firebase";
 const NewTicket = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
+  
+  const [ticketType, setTicketType] = useState("");
   const [description, setDescription] = useState("");
+  const [sla, setSla] = useState<number | string>("");
+
+  // Mapa de tipos de tickets y sus SLA
+  const ticketTypes = {
+    "Caida del servicio": 60,
+    "Problemas de hardware": 60,
+    "Redes": 30,
+    "Accesos": 15,
+    "Instalación de software": 120,
+    "Soporte en el uso de herramientas": 60,
+    "Posibles brechas de seguridad": 15,
+    "Fallas en el servicio": 30,
+    "Reclamos o quejas de clientes": 30,
+    "Incumplimiento normativo": 15
+  };
+
+  const handleTicketTypeChange = (e: SelectChangeEvent<string>) => {
+    const selectedType = e.target.value as string;
+    setTicketType(selectedType);
+    setSla(ticketTypes[selectedType as keyof typeof ticketTypes] || ""); // Establece el SLA basado en el tipo de ticket
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !description) return;
+    if (!ticketType || !description) return;
 
     await addDoc(collection(db, "tickets"), {
-      title,
+      type: ticketType,
       description,
+      sla,
       status: "pendiente",
       createdAt: Timestamp.now().toMillis(),
       userId: user?.uid,
     });
 
-    navigate("/dashboard");
+    // Redirigir a la página de "Mis Tickets" después de crear el ticket
+    navigate("/my-tickets");
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>Nuevo Ticket</Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField fullWidth label="Título" value={title} onChange={(e) => setTitle(e.target.value)} margin="normal" required />
-        <TextField fullWidth label="Descripción" multiline rows={4} value={description} onChange={(e) => setDescription(e.target.value)} margin="normal" required />
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Crear Ticket</Button>
-      </form>
+    <Container sx={{ mt: 4, backgroundColor: "#f9f9f9", padding: 4, borderRadius: 2 }}>
+      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', color: "#333" }}>
+        Crear Nuevo Ticket
+      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "500px" }}>
+          {/* Select de tipo de ticket */}
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <InputLabel id="ticket-type-label">Tipo de Problema</InputLabel>
+            <Select
+              labelId="ticket-type-label"
+              value={ticketType}
+              onChange={handleTicketTypeChange}
+              required
+              label="Tipo de Ticket"
+            >
+              {Object.keys(ticketTypes).map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Mostrar el SLA correspondiente */}
+          {ticketType && sla && (
+            <Typography variant="body1" color="text.secondary" sx={{ marginBottom: 2 }}>
+              SLA: {sla} minutos
+            </Typography>
+          )}
+
+          {/* Descripción del ticket */}
+          <TextField
+            fullWidth
+            label="Descripción"
+            multiline
+            rows={4}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            margin="normal"
+            required
+            variant="outlined"
+            sx={{ borderRadius: 1 }}
+          />
+
+          {/* Botón para enviar el ticket */}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{
+              mt: 2,
+              width: '100%',
+              borderRadius: 1,
+              fontWeight: 'bold',
+              padding: '12px 0',
+              boxShadow: 3,
+              '&:hover': { backgroundColor: '#1976d2' },
+            }}
+          >
+            Enviar Ticket
+          </Button>
+        </form>
+      </Box>
     </Container>
   );
 };

@@ -4,17 +4,22 @@ import {
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
-  User,
+  User as FirebaseUser, // Importa User de Firebase Authentication
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword
 } from "firebase/auth";
 import { auth, db } from "../firebase/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
+// Definir el tipo de usuario que incluye 'role' proveniente de Firestore
+interface User extends FirebaseUser {
+  role: string;
+}
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  authLoading: boolean;  // Nuevo estado para controlar la carga de autenticación
+  authLoading: boolean;
   loginWithGoogle: () => Promise<void>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
   registerWithEmail: (email: string, password: string) => Promise<void>;
@@ -25,20 +30,33 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);  // Para la carga de operaciones (login, register)
-  const [authLoading, setAuthLoading] = useState<boolean>(true);  // Para la carga de la autenticación del usuario
+  const [loading, setLoading] = useState<boolean>(false);
+  const [authLoading, setAuthLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
+        // Primero recuperamos el rol y los datos adicionales de Firestore
         const userRef = doc(db, "users", currentUser.uid);
         const userSnap = await getDoc(userRef);
+
+        // Si el documento no existe, lo creamos con un rol predeterminado
         if (!userSnap.exists()) {
           await setDoc(userRef, { uid: currentUser.uid, email: currentUser.email, role: "cliente" });
         }
+
+        // Obtenemos los datos del usuario de Firestore
+        const userData = userSnap.data();
+
+        // Combinamos los datos de Firebase Authentication y Firestore
+        setUser({
+          ...currentUser, // Datos de autenticación de Firebase
+          role: userData?.role || "cliente", // Asignamos el 'role' desde Firestore
+        });
+      } else {
+        setUser(null);
       }
-      setUser(currentUser);
-      setAuthLoading(false);  
+      setAuthLoading(false); // Indicamos que la autenticación terminó
     });
 
     return () => unsubscribe();
@@ -48,11 +66,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
+
     const userRef = doc(db, "users", result.user.uid);
     const userSnap = await getDoc(userRef);
+
     if (!userSnap.exists()) {
       await setDoc(userRef, { uid: result.user.uid, email: result.user.email, role: "cliente" });
     }
+
     setLoading(false);
   };
 

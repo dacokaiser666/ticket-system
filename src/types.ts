@@ -1,6 +1,6 @@
 export interface Ticket {
   id?: string;
-  title: string;
+  type: string;
   description: string;
   status: "pendiente" | "en proceso" | "resuelto";
   createdAt: number;
