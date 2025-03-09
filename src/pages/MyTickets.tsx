@@ -36,7 +36,7 @@ const MyTickets = () => {
   }, [user]);
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ flex: 1, mt: 4, minWidth: "1250px" }}>
       <Typography variant="h4" gutterBottom>
         Mis Tickets
       </Typography>
@@ -49,7 +49,7 @@ const MyTickets = () => {
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5">{ticket.type}</Typography>
                 <Typography variant="h6" color="text.secondary">
-                  SLA: {ticket.sla} minutos
+                  Tiempo máximo de respuesta: {ticket.sla} minutos
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {ticket.description}
@@ -65,24 +65,10 @@ const MyTickets = () => {
                   }
                   sx={{ mt: 2 }}
                 />
-                {ticket.assignedTo && (
-                  <>
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                      sx={{ mt: 2 }}
-                    >
-                      Asignado a:
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                      sx={{ mt: 1 }}
-                    >
-                      {ticket.assignedTo}
-                    </Typography>
-                  </>
-                )}
+                <Typography variant="body2" color="text.primary" sx={{ mt: 1 }}>
+                  Responsable:{" "}
+                  {ticket.assignedTo ? ticket.assignedTo : "No asignado"}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -94,10 +80,10 @@ const MyTickets = () => {
         color="primary"
         sx={{
           mt: 2,
-          width: "100%",
+          width: "auto",
           borderRadius: 1,
           fontWeight: "bold",
-          padding: "12px 0",
+          padding: "12px",
           boxShadow: 3,
           "&:hover": { backgroundColor: "#1976d2" },
         }}

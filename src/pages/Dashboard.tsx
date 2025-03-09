@@ -85,7 +85,13 @@ const Dashboard = () => {
                 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6">{service.name}</Typography>
+                  {/* Mostrar el ícono junto al nombre */}
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    {service.icon}
+                    <Typography variant="h6" sx={{ ml: 1 }}>
+                      {service.name}
+                    </Typography>
+                  </Box>
                   <Typography variant="body2" color="text.secondary">
                     {service.description}
                   </Typography>
@@ -98,7 +104,7 @@ const Dashboard = () => {
                       display: "block",
                     }}
                   >
-                    SLA: {service.sla} minutos
+                    Tiempo máximo de respuesta: {service.sla} minutos
                   </Typography>
                   <Button
                     variant="contained"
