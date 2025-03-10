@@ -42,10 +42,9 @@ const EmployeeDashboard = () => {
       }
     );
 
-    // Fetch emails from Firestore based on userId from tickets
     const fetchEmails = async () => {
       const emails: { [key: string]: string } = {};
-      const userIds = [...new Set(tickets.map((ticket) => ticket.userId))]; // Get unique userIds from tickets
+      const userIds = [...new Set(tickets.map((ticket) => ticket.userId))];
 
       for (const userId of userIds) {
         if (userId) {
@@ -55,21 +54,17 @@ const EmployeeDashboard = () => {
           }
         }
       }
-
       setUserEmails(emails);
     };
 
     fetchEmails();
 
-    // Cleanup the listener when the component is unmounted
     return () => unsubscribe();
   }, [user, tickets]);
 
   const handleStatusChange = async (ticketId: string, newStatus: string) => {
     const ticketRef = doc(db, "tickets", ticketId);
-    await updateDoc(ticketRef, {
-      status: newStatus,
-    });
+    await updateDoc(ticketRef, { status: newStatus });
   };
 
   const handleAssignToEmployee = async (
@@ -77,13 +72,11 @@ const EmployeeDashboard = () => {
     employeeId: string
   ) => {
     const ticketRef = doc(db, "tickets", ticketId);
-    await updateDoc(ticketRef, {
-      assignedTo: employeeId,
-    });
+    await updateDoc(ticketRef, { assignedTo: employeeId });
   };
 
   return (
-    <Container sx={{ mt: 4, minWidth: "1250px" }}>
+    <Container maxWidth="xl" sx={{ mt: 4, height: "fit-content" }}>
       <AppBar
         position="static"
         color="primary"
@@ -92,12 +85,9 @@ const EmployeeDashboard = () => {
       >
         <Container>
           <Toolbar sx={{ justifyContent: "space-between" }}>
-            {/* Título de la app */}
             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#fff" }}>
               Sisticket - Panel de Administración de Tickets
             </Typography>
-
-            {/* Botones de navegación */}
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button variant="contained" color="primary" onClick={logout}>
                 Cerrar Sesión
@@ -107,10 +97,15 @@ const EmployeeDashboard = () => {
         </Container>
       </AppBar>
 
-      <Grid container spacing={3} sx={{ padding: "1rem" }}>
+      <Grid
+        container
+        spacing={3}
+        sx={{ padding: "1rem" }}
+        justifyContent="center"
+      >
         {tickets.map((ticket) => (
-          <Grid item xs={12} sm={6} md={6} lg={4} key={ticket.id}>
-            <Card sx={{ width: "100%" }}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={ticket.id}>
+            <Card sx={{ width: "100%", maxWidth: "350px", margin: "auto" }}>
               <CardContent>
                 <Typography variant="h6">{ticket.type}</Typography>
                 <Typography
@@ -127,17 +122,9 @@ const EmployeeDashboard = () => {
                 >
                   SLA: {ticket.sla} minutos
                 </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{ mt: 1 }}
-                ></Typography>
-
                 <Typography variant="body2" color="text.secondary">
                   {ticket.description}
                 </Typography>
-
-                {/* Mostrar el email del usuario que envió el ticket */}
 
                 <Chip
                   label={ticket.status}
@@ -151,7 +138,6 @@ const EmployeeDashboard = () => {
                   sx={{ mt: 2 }}
                 />
 
-                {/* Asignar empleado */}
                 <FormControl fullWidth sx={{ mt: 2 }}>
                   <InputLabel>Asignar a</InputLabel>
                   <Select
@@ -173,7 +159,6 @@ const EmployeeDashboard = () => {
                   </Select>
                 </FormControl>
 
-                {/* Cambiar estado del ticket */}
                 <FormControl fullWidth sx={{ mt: 2 }}>
                   <InputLabel>Estado</InputLabel>
                   <Select
